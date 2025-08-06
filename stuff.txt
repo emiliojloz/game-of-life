@@ -1,0 +1,47 @@
+// Glider synthesis
+block(0, 0); 
+blinker(3, 0, 0); 
+
+// Clean glider collision
+glider(6, 0, 1);
+glider(0, 7, 3);
+
+// Test
+block(W-2, 0);
+blinker(0, H-3, 1);
+blinker(0, H-7, 0);
+blinker(4, H-3, 0);
+
+// Glider Eater 0
+glider(0, 0, 0);
+eater(W-4, H-4, 0);
+
+// Glider Eater 1
+glider(W-3, 0, 1);
+eater(0, H-4, 1);
+
+// Interesting
+ H = 40, W = 40
+int c[4][4] =
+{
+    {1, 1, 0, 0},
+    {0, 1, 1, 0},
+    {0, 0, 0, 1},
+    {0, 0, 1, 1}
+};
+parse(4, 4, c, x, y);
+glider(W-3, H-3, 2);
+
+// Glider Eater 2
+glider(W-3, H-3, 2);
+eater(0, 0, 2);
+
+// Glider Eater 3
+glider(0, H-3, 3);
+eater(W-4, 0, 3);
+
+// R-Pentomino
+ W = 100, H = 100
+r_pent((W/2)-3, (H/2)-3);
+
+
