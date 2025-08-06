@@ -287,7 +287,7 @@ void r_pent(int x, int y)
 int main(int argc, char* argv[])
 {
     // R-Pentomino
-    W = 100, H = 100
+    // W = 100, H = 100
     r_pent((W/2)-3, (H/2)-3);
 
     while(1)
