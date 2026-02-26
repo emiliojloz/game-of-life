@@ -45,7 +45,7 @@ void render(int t, int g)
 	    buf[i+1][j] = mat[i+1][j];
 	}
 	printf("\n");
-    }
+}
 
     int l = 0;
     if(g)
