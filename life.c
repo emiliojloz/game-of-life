@@ -57,7 +57,7 @@ void render(int t, int g)
     // Delay of 't' ms
     usleep(t * 1000);
 
-    // (Optional) for cleaner look
+    // For cleaner look
     // 'ESC[#A' Moves cursor up 'H' lines
     // 'ESC[0J' Erases from cursor to end of screen
     printf("\x1b[%iA\x1b[0J", (H/2)+l);
