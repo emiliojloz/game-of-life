@@ -10,9 +10,6 @@
 int mat[H][W];
 int buf[H][W];
 
-// Define count
-int c;
-
 // Init generation counter
 int gen = 0;
 
@@ -21,6 +18,9 @@ char* fg = "█";
 char* fg_t = "▀";
 char* fg_b = "▄";
 char* bg = " ";
+
+// Define count
+int c;
 
 /* Rendering */
 
@@ -57,7 +57,7 @@ void render(int t)
     usleep(t * 1000);
 
     // For cleaner look
-    // 'ESC[#A' Moves cursor up '#' lines
+    // 'ESC[#A' Moves cursor up 'H' lines
     // 'ESC[0J' Erases from cursor to end of screen
     printf("\x1b[%iA\x1b[0J", (H/2)+1);
 }
@@ -66,15 +66,15 @@ void render(int t)
 
 int count(int x, int y)
 {
-    int num = 0;
+    c = 0;
 
     // Sum all living cells directly touching (x, y)
     for(int i = y-1; i <= y+1; i++)
 	for(int j = x-1; j <= x+1; j++)
 	    if(buf[i][j] && i >= 0 && i < H && j >= 0 && j < W) // Bounds
-			num += 1;
+			c += 1;
 
-    return buf[y][x] ? num - 1 : num;
+    return c;
 }
 
 void rules()
@@ -90,7 +90,7 @@ void rules()
 			{
 			    // If a living cell has more than 3 neighbours, die (Overpopulation)
 			    // If a living cell has less than 2 neigbours, die (Underpopulation)
-			    if(buf[i][j] && c > 3 || c < 2)
+			    if(buf[i][j] && c-1 > 3 || c-1 < 2)
 					mat[i][j] = 0;
 		
 			    // If a dead cell has exactly 3 living neighbours, revive (Birth)
@@ -111,190 +111,145 @@ void plot(int x, int y)
     mat[y][x] = 1;
 }
 
-void parse(int pw, int ph, int pat[ph][pw], int x, int y)
+void parse(int ph, int pw, int pat[ph][pw], int x, int y, int d)
 {
-    for(int i = 0; i < ph; i++)
-	for(int j = 0; j < pw; j++)
-	    mat[y + i][x + j] = pat[i][j];
-}
-
-void block(int x, int y)
-{
-    int a[2][2] = 
+    switch (d)
     {
-	{1, 1},
-	{1, 1}
-    };
+        case 0:
+            for(int i = 0; i < ph; i++)
+            for(int j = 0; j < pw; j++)
+                mat[y + i][x + j] = pat[i][j];
+            break;
 
-    parse(2, 2, a, x, y);
-}
+        case 1:
+            for(int i = 0; i < ph; i++)
+            for(int j = 0; j < pw; j++)
+                mat[y + i][x + j] = pat[i][(pw-1)-j];
+            break;
 
-void blinker(int x, int y, int d)
-{
-    int a[3][3];
+        case 2:
+            for(int i = 0; i < ph; i++)
+            for(int j = 0; j < pw; j++)
+                mat[y + i][x + j] = pat[(ph-1)-i][(pw-1)-j];
+            break;
 
-    switch(d)
-    {
-	case 0:
-	    int a[3][3] =
-	    {
-		{0, 1, 0},
-		{0, 1, 0},
-		{0, 1, 0}
-	    };
-	    parse(3, 3, a, x, y);
-
-	    break;
-
-	case 1:
-	    int b[3][3] =
-	    {
-		{0, 0, 0},
-		{1, 1, 1},
-		{0, 0, 0}
-	    };
-	    parse(3, 3, b, x, y);
-
-	    break;
+        case 3:
+            for(int i = 0; i < ph; i++)
+            for(int j = 0; j < pw; j++)
+                mat[y + i][x + j] = pat[i][(pw-1)-j];
+            break;
     }
 }
 
-void glider(int x, int y, int d)
+// Still lifes:
+
+int block[2][2] = 
 {
-    switch(d)
-    {
-	case 0:
-	    int a[3][3] =
-	    {
-		{0, 1, 0},
-		{0, 0, 1},
-		{1, 1, 1}
-	    };
-	    parse(3, 3, a, x, y);
+    {1, 1},
+    {1, 1}
+};
 
-	    break;
-
-	case 1:
-	    int b[3][3] =
-	    {
-		{0, 1, 0},
-		{1, 0, 0},
-		{1, 1, 1}
-	    };
-	    parse(3, 3, b, x, y);
-
-	    break;
-
-	case 2:
-    	    int c[3][3] =
-	    {
-		{1, 1, 1},
-		{1, 0, 0},
-    		{0, 1, 0}
-	    };
-	    parse(3, 3, c, x, y);
-
-	    break;
-
-	case 3:
-	    int d[3][3] =
-	    {
-		{1, 1, 1},
-		{0, 0, 1},
-		{0, 1, 0}
-	    };
-	    parse(3, 3, d, x, y);
-
-	    break;
-    }
-}
-
-void climber(int x, int y, int d)
+int eater[4][4] =
 {
-    switch(d)
-    {
-	case 0:
-	    plot(x, y);
+    {1, 1, 0, 0},
+    {1, 0, 1, 0},
+    {0, 0, 1, 0},
+    {0, 0, 1, 1}
+};
 
-	    break;
-    }
-}
-
-void eater(int x, int y, int d)
+int beehive[3][4] =
 {
-    switch(d)
-    {
-	case 0:
-	    int a[4][4] =
-	    {
-		{1, 1, 0, 0},
-		{1, 0, 1, 0},
-		{0, 0, 1, 0},
-		{0, 0, 1, 1}
-	    };
-	    parse(4, 4, a, x, y);
+    {0, 1, 1, 0},
+    {1, 0, 0, 1},
+    {0, 1, 1, 0}
+};
 
-	    break;
-	case 1:
-	    int b[4][4] =
-	    {
-		{0, 0, 1, 1},
-		{0, 1, 0, 1},
-		{0, 1, 0, 0},
-		{1, 1, 0, 0}
-	    };
-	    parse(4, 4, b, x, y);
-
-	    break;
-
-	case 2:
-	    int c[4][4] =
-	    {
-		{1, 1, 0, 0},
-		{0, 1, 0, 0},
-		{0, 1, 0, 1},
-		{0, 0, 1, 1}
-	    };
-	    parse(4, 4, c, x, y);
-
-	    break;
-	case 3:
-	    int d[4][4] =
-	    {
-		{0, 0, 1, 1},
-		{0, 0, 1, 0},
-		{1, 0, 1, 0},
-		{1, 1, 0, 0}
-	    };
-	    parse(4, 4, d, x, y);
-
-	    break;
-    }
-}
-
-void r_pent(int x, int y)
+int loaf[4][4] =
 {
-    int a[3][3] =
-    {
-	{0, 1, 1},
-	{1, 1, 0},
-	{0, 1, 0}
-    };
-    parse(3, 3, a, x, y);
-}
+    {0, 1, 1, 0},
+    {1, 0, 0, 1},
+    {0, 1, 0, 1},
+    {0, 0, 1, 0}
+};
+
+int boat[3][3] =
+{
+    {1, 1, 0},
+    {1, 0, 1},
+    {0, 1, 0}
+};
+
+int tub[3][3] =
+{
+    {0, 1, 0},
+    {1, 0, 1},
+    {0, 1, 0}
+};
+
+// Chaotic
+
+int r_pent[3][3] =
+{
+    {0, 1, 1},
+    {1, 1, 0},
+    {0, 1, 0}
+};
+
+// Oscillators
+
+int blinker[3][3] =
+{ 
+    {0, 1, 0},
+    {0, 1, 0},
+    {0, 1, 0}
+};
+
+int toad[4][4] =
+{
+    {0, 0, 1, 0},
+    {1, 0, 0, 1},
+    {1, 0, 0, 1},
+    {0, 1, 0, 0}
+};
+
+int beacon[4][4] =
+{
+    {1, 1, 0, 0},
+    {1, 1, 0, 0},
+    {0, 0, 1, 1},
+    {0, 0, 1, 1}
+};
+
+// Spaceships
+
+int glider[3][3] =
+{
+    {0, 1, 0},
+    {0, 0, 1},
+    {1, 1, 1}
+};
+
+int lwss[4][5] =
+{
+    {1, 0, 0, 1, 0},
+    {0, 0, 0, 0, 1},
+    {1, 0, 0, 0, 1},
+    {0, 1, 1, 1, 1}
+};
 
 /* Main */
 
 int main(int argc, char* argv[])
 {
-    // R-Pentomino
-    // W = 100, H = 100
-    r_pent((W/2)-3, (H/2)-3);
+    //parse(3, 3, r_pent, (W/2)-3, (H/2)-3, 0);
+    parse(3, 3, blinker, 0, 0, 0);
+    parse(4, 5, lwss, (W/2)-3, (H/2)-3, 0);
+    //parse(2, 2, block, 0, 0, 0);
 
     while(1)
     {
-	render(500);
-	rules();
+	    render(1000);
+	    rules();
     }
 
     return 0;
