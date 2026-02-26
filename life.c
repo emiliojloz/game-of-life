@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define H 101
+#define H 100
 #define W 100
 
 // Define arrays as globals
