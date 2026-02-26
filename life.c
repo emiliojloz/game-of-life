@@ -86,13 +86,14 @@ void rules()
 		{
 		    // If a living cell has more than 3 neighbours, die (Overpopulation)
 		    // If a living cell has less than 2 neigbours, die (Underpopulation)
-		    // (Else, live)
 		    if(buf[i][j] && count(j, i) > 3 || count(j, i) < 2)
 				mat[i][j] = 0;
 	
 		    // If a dead cell has exactly 3 living neighbours, revive (Birth)
 		    if(!buf[i][j] && count(j, i) == 3)
 				mat[i][j] = 1;
+
+			// Else, stay alive
 		}
     }
     gen++;
