@@ -25,33 +25,33 @@ void render(int t, int g)
 {
     for(int i = 0; i < H; i+=2)
     {
-	for(int j = 0; j < W; j++)
-	{
-	    // Print array
-	    if(mat[i][j] && !mat[i+1][j])
-		printf("%s", fg_t);
-
-	    else if(!mat[i][j] && mat[i+1][j])
-		printf("%s", fg_b);
-
-	    else if(mat[i][j] && mat[i+1][j])
-		printf("%s", fg);
-
-	    else
-		printf("%s", bg);
-
-	    // Swap buffers
-	    buf[i][j] = mat[i][j];
-	    buf[i+1][j] = mat[i+1][j];
-	}
+		for(int j = 0; j < W; j++)
+		{
+		    // Print array
+		    if(mat[i][j] && !mat[i+1][j])
+				printf("%s", fg_t);
+	
+		    else if(!mat[i][j] && mat[i+1][j])
+				printf("%s", fg_b);
+	
+		    else if(mat[i][j] && mat[i+1][j])
+				printf("%s", fg);
+	
+		    else
+				printf("%s", bg);
+	
+		    // Swap buffers
+		    buf[i][j] = mat[i][j];
+		    buf[i+1][j] = mat[i+1][j];
+		}
 	printf("\n");
 	}
 
     int l = 0;
     if(g)
     {
-	printf("Gen: %i\n", gen);
-	l = 1;
+		printf("Gen: %i\n", gen);
+		l = 1;
     }
     
     // Delay of 't' ms
@@ -82,20 +82,19 @@ void rules()
 {
     for(int i = 0; i < H; i++)
     {
-	for(int j = 0; j < W; j++)
-	{
-	    // If a living cell has more than 3 neighbours, die (Overpopulation)
-	    // If a living cell has less than 2 neigbours, die (Underpopulation)
-	    // (Else, live)
-	    if(buf[i][j] && count(j, i) > 3 || count(j, i) < 2)
-		mat[i][j] = 0;
-
-	    // If a dead cell has exactly 3 living neighbours, revive (Birth)
-	    if(!buf[i][j] && count(j, i) == 3)
-		mat[i][j] = 1;
-	}
+		for(int j = 0; j < W; j++)
+		{
+		    // If a living cell has more than 3 neighbours, die (Overpopulation)
+		    // If a living cell has less than 2 neigbours, die (Underpopulation)
+		    // (Else, live)
+		    if(buf[i][j] && count(j, i) > 3 || count(j, i) < 2)
+				mat[i][j] = 0;
+	
+		    // If a dead cell has exactly 3 living neighbours, revive (Birth)
+		    if(!buf[i][j] && count(j, i) == 3)
+				mat[i][j] = 1;
+		}
     }
-
     gen++;
 }
 
