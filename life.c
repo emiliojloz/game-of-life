@@ -1,4 +1,4 @@
-// Conway's Game of Life (v2)
+// Conway's Game of Life
 
 #include <stdio.h>
 #include <unistd.h>
