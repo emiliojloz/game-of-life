@@ -85,18 +85,19 @@ void rules()
 		for(int j = 0; j < W; j++)
 		{
 			c = count(j, i);
-
 			if(c)
-		    // If a living cell has more than 3 neighbours, die (Overpopulation)
-		    // If a living cell has less than 2 neigbours, die (Underpopulation)
-		    if(buf[i][j] && c > 3 || c < 2)
-				mat[i][j] = 0;
+			{
+			    // If a living cell has more than 3 neighbours, die (Overpopulation)
+			    // If a living cell has less than 2 neigbours, die (Underpopulation)
+			    if(buf[i][j] && c > 3 || c < 2)
+					mat[i][j] = 0;
+		
+			    // If a dead cell has exactly 3 living neighbours, revive (Birth)
+			    if(!buf[i][j] && c == 3)
+					mat[i][j] = 1;
 	
-		    // If a dead cell has exactly 3 living neighbours, revive (Birth)
-		    if(!buf[i][j] && c == 3)
-				mat[i][j] = 1;
-
-			// Else, stay alive
+				// Else, stay alive
+			}
 		}
     }
     gen++;
