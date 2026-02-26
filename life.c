@@ -10,14 +10,17 @@
 int mat[H][W];
 int buf[H][W];
 
-// Define generation counter
+// Init generation counter
 int gen = 0;
 
-// Define foreground and background chars
+// Init foreground and background chars
 char* fg = "█";
 char* fg_t = "▀";
 char* fg_b = "▄";
 char* bg = " ";
+
+// Define count
+int c;
 
 /* Rendering */
 
@@ -47,12 +50,9 @@ void render(int t, int g)
 	printf("\n");
 	}
 
-    int l = 0;
+	// Generation counter
     if(g)
-    {
 		printf("Gen: %i\n", gen);
-		l = 1;
-    }
     
     // Delay of 't' ms
     usleep(t * 1000);
@@ -60,7 +60,7 @@ void render(int t, int g)
     // For cleaner look
     // 'ESC[#A' Moves cursor up 'H' lines
     // 'ESC[0J' Erases from cursor to end of screen
-    printf("\x1b[%iA\x1b[0J", (H/2)+l);
+    printf("\x1b[%iA\x1b[0J", (H/2)+g);
 }
 
 /* Calculation */
@@ -84,13 +84,16 @@ void rules()
     {
 		for(int j = 0; j < W; j++)
 		{
+			c = count(j, i);
+
+			if(c)
 		    // If a living cell has more than 3 neighbours, die (Overpopulation)
 		    // If a living cell has less than 2 neigbours, die (Underpopulation)
-		    if(buf[i][j] && count(j, i) > 3 || count(j, i) < 2)
+		    if(buf[i][j] && c > 3 || c < 2)
 				mat[i][j] = 0;
 	
 		    // If a dead cell has exactly 3 living neighbours, revive (Birth)
-		    if(!buf[i][j] && count(j, i) == 3)
+		    if(!buf[i][j] && c == 3)
 				mat[i][j] = 1;
 
 			// Else, stay alive
@@ -99,7 +102,7 @@ void rules()
     gen++;
 }
 
-/* Plotting and Structure methods */
+/* Plotting and Patterns */
 
 void plot(int x, int y)
 {
