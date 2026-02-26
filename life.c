@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define H 100
+#define H 101
 #define W 100
 
 // Define arrays as globals
@@ -24,7 +24,7 @@ int c;
 
 /* Rendering */
 
-void render(int t, int g)
+void render(int t)
 {
     for(int i = 0; i < H; i+=2)
     {
@@ -51,16 +51,15 @@ void render(int t, int g)
 	}
 
 	// Generation counter
-    if(g)
-		printf("Gen: %i\n", gen);
+	printf("Gen: %i\n", gen);
     
     // Delay of 't' ms
     usleep(t * 1000);
 
     // For cleaner look
-    // 'ESC[#A' Moves cursor up 'H' lines
+    // 'ESC[#A' Moves cursor up '#' lines
     // 'ESC[0J' Erases from cursor to end of screen
-    printf("\x1b[%iA\x1b[0J", (H/2)+g);
+    printf("\x1b[%iA\x1b[0J", (H/2)+1);
 }
 
 /* Calculation */
@@ -294,7 +293,7 @@ int main(int argc, char* argv[])
 
     while(1)
     {
-	render(10, 1);
+	render(500);
 	rules();
     }
 
