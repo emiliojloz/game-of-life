@@ -72,8 +72,8 @@ int count(int x, int y)
     // Sum all living cells directly touching (x, y)
     for(int i = y-1; i <= y+1; i++)
 	for(int j = x-1; j <= x+1; j++)
-	    if(buf[i][j] && i >= 0 && i < H && j >= 0 && j < W)
-		num += 1;
+	    if(buf[i][j] && i >= 0 && i < H && j >= 0 && j < W) // Bounds
+			num += 1;
 
     return buf[y][x] ? num - 1 : num;
 }
@@ -109,12 +109,8 @@ void plot(int x, int y)
 void parse(int pw, int ph, int pat[ph][pw], int x, int y)
 {
     for(int i = 0; i < ph; i++)
-    {
 	for(int j = 0; j < pw; j++)
-	{
 	    mat[y + i][x + j] = pat[i][j];
-	}
-    }
 }
 
 void block(int x, int y)
