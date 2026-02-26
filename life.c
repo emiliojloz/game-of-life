@@ -85,6 +85,8 @@ void rules()
 		for(int j = 0; j < W; j++)
 		{
 			c = count(j, i);
+
+			// Optimization to skip empty space
 			if(c)
 			{
 			    // If a living cell has more than 3 neighbours, die (Overpopulation)
@@ -96,7 +98,7 @@ void rules()
 			    if(!buf[i][j] && c == 3)
 					mat[i][j] = 1;
 	
-				// Else, stay alive
+				// Else, stay the same
 			}
 		}
     }
