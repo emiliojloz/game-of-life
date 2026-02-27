@@ -111,7 +111,7 @@ void plot(int x, int y)
     mat[y][x] = 1;
 }
 
-void parse(int ph, int pw, int pat[ph][pw], int x, int y, int d)
+void paste(int ph, int pw, int pat[ph][pw], int x, int y, int d)
 {
     switch (d)
     {
@@ -227,10 +227,10 @@ int lwss[4][5] =
 
 int main(int argc, char* argv[])
 {
-    //parse(3, 3, r_pent, (W/2)-3, (H/2)-3, 0);
-    parse(3, 3, blinker, 0, 0, 0);
-    parse(4, 5, lwss, (W/2)-3, (H/2)-3, 0);
-    //parse(2, 2, block, 0, 0, 0);
+    //paste(3, 3, r_pent, (W/2)-3, (H/2)-3, 0);
+    paste(3, 3, blinker, 0, 0, 0);
+    paste(4, 5, lwss, (W/2)-3, (H/2)-3, 0);
+    //paste(2, 2, block, 0, 0, 0);
 
     while(1)
     {
