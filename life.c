@@ -141,7 +141,7 @@ void paste(int ph, int pw, int pat[ph][pw], int x, int y, int d)
     }
 }
 
-// Still lifes:
+// Still lifes
 
 int block[2][2] = 
 {
