@@ -227,11 +227,9 @@ int lwss[4][5] =
 
 int main(int argc, char* argv[])
 {
-    //paste(3, 3, r_pent, (W/2)-3, (H/2)-3, 0);
-    paste(3, 3, blinker, 0, 0, 0);
-    paste(4, 5, lwss, (W/2)-3, (H/2)-3, 0);
-    //paste(2, 2, block, 0, 0, 0);
-
+    paste(3, 3, glider, 0, 0, 0);
+	paste(4, 4, eater, W-4, H-4);
+	
     while(1)
     {
 	    render(10);
