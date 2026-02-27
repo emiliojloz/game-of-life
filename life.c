@@ -228,7 +228,7 @@ int lwss[4][5] =
 int main(int argc, char* argv[])
 {
     paste(3, 3, glider, 0, 0, 0);
-	paste(4, 4, eater, W-4, H-4);
+	paste(4, 4, eater, W-4, H-4, 0);
 	
     while(1)
     {
