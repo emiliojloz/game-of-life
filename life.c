@@ -10,9 +10,6 @@
 int mat[H][W];
 int buf[H][W];
 
-// Define count
-int c;
-
 // Init generation counter
 int gen = 0;
 
@@ -21,6 +18,9 @@ char* fg = "█";
 char* fg_t = "▀";
 char* fg_b = "▄";
 char* bg = " ";
+
+// Define count
+int c;
 
 /* Rendering */
 
@@ -88,12 +88,12 @@ void rules()
 			// Optimization to skip empty space
 			if(c)
 			{
-			    // If a living cell has more than 3 neighbours, die
-			    // If a living cell has less than 2 neigbours, die
+			    // If a living cell has more than 3 neighbours, die (Overpopulation)
+			    // If a living cell has less than 2 neigbours, die (Underpopulation)
 			    if(buf[i][j] && c-1 > 3 || c-1 < 2)
 					mat[i][j] = 0;
 		
-			    // If a dead cell has exactly 3 living neighbours, revive
+			    // If a dead cell has exactly 3 living neighbours, revive (Birth)
 			    if(!buf[i][j] && c == 3)
 					mat[i][j] = 1;
 	
@@ -136,7 +136,7 @@ void parse(int ph, int pw, int pat[ph][pw], int x, int y, int d)
         case 3:
             for(int i = 0; i < ph; i++)
             for(int j = 0; j < pw; j++)
-                mat[y + i][x + j] = pat[i][(pw-1)-j];
+                mat[y + i][x + j] = pat[(ph-1)-i][j];
             break;
     }
 }
@@ -248,7 +248,7 @@ int main(int argc, char* argv[])
 
     while(1)
     {
-	    render(1000);
+	    render(10);
 	    rules();
     }
 
