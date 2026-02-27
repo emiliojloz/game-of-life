@@ -10,6 +10,9 @@
 int mat[H][W];
 int buf[H][W];
 
+// Define count
+int c;
+
 // Init generation counter
 int gen = 0;
 
@@ -18,9 +21,6 @@ char* fg = "█";
 char* fg_t = "▀";
 char* fg_b = "▄";
 char* bg = " ";
-
-// Define count
-int c;
 
 /* Rendering */
 
