@@ -88,12 +88,12 @@ void rules()
 			// Optimization to skip empty space
 			if(c)
 			{
-			    // If a living cell has more than 3 neighbours, die (Overpopulation)
-			    // If a living cell has less than 2 neigbours, die (Underpopulation)
+			    // If a living cell has more than 3 neighbours, die
+			    // If a living cell has less than 2 neigbours, die
 			    if(buf[i][j] && c-1 > 3 || c-1 < 2)
 					mat[i][j] = 0;
 		
-			    // If a dead cell has exactly 3 living neighbours, revive (Birth)
+			    // If a dead cell has exactly 3 living neighbours, revive
 			    if(!buf[i][j] && c == 3)
 					mat[i][j] = 1;
 	
@@ -124,19 +124,19 @@ void parse(int ph, int pw, int pat[ph][pw], int x, int y, int d)
         case 1:
             for(int i = 0; i < ph; i++)
             for(int j = 0; j < pw; j++)
-                mat[y + i][x + j] = pat[i][(pw-1)-j];
+                mat[y + i][x + j] = pat[i][(pw-1)-j]; // Flip X
             break;
 
         case 2:
             for(int i = 0; i < ph; i++)
             for(int j = 0; j < pw; j++)
-                mat[y + i][x + j] = pat[(ph-1)-i][(pw-1)-j];
+                mat[y + i][x + j] = pat[(ph-1)-i][(pw-1)-j]; // Flip X and Y
             break;
 
         case 3:
             for(int i = 0; i < ph; i++)
             for(int j = 0; j < pw; j++)
-                mat[y + i][x + j] = pat[(ph-1)-i][j];
+                mat[y + i][x + j] = pat[(ph-1)-i][j]; // Flip Y
             break;
     }
 }
